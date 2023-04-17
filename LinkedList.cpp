@@ -9,12 +9,14 @@ public:
     // prototypes of all the necessary functions
     void insert(int data, int index);
     void removeAt(int index);
+    void remove (int data);
     void pop_back();
     void print();
     void push_front(int data);
     void push_back(int data);
     void pop_front();
     void clear();
+    int search(int data);
     int get_size() const {return size;}
     int& operator[] (int index);
 
@@ -198,6 +200,64 @@ void List::pop_back()
 {
     if (head == nullptr) {return;} // if the list is empty
     removeAt(this->size - 1);
+}
+
+
+// REMOVING THE FIRST OCCURRENCE OF THE VALUE
+void List::remove(int data)
+{
+    Node *currElem = head;
+    Node *previousElem = nullptr;
+
+    // traversing the list to find the required value:
+    while(currElem != nullptr)
+    {
+        // checking if this is the value we're looking for:
+        if (currElem->data == data)
+        {
+            if (previousElem == nullptr) // if the element we want to remove is 'head'
+            {
+                head = currElem->ptrNextNode;
+            }
+
+            else
+            {
+                previousElem->ptrNextNode = currElem->ptrNextNode;
+            }
+
+            delete currElem;
+            size--;
+            return;
+
+        }
+
+        previousElem = currElem;
+        currElem = currElem->ptrNextNode;
+
+    }
+}
+
+
+// RETURNING THE INDEX OF THE FIRST OCCURRENCE OF THE GIVEN VALUE
+int List::search(int data)
+{
+    Node *currElem = head;
+    int index = 0;
+
+    // traversing the list looking for the given element
+    while(currElem != nullptr)
+    {
+        if (currElem->data == data)
+        {
+            return index;
+        }
+
+        currElem = currElem->ptrNextNode;
+        index++;
+
+    }
+
+    return -1; // if the element not found
 }
 
 

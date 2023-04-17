@@ -8,6 +8,7 @@ public:
     List();
     ~List();
     void insert(int value, int index);
+    void remove (int data);
     void removeAt(int index);
     void pop_back();
     void print();
@@ -15,6 +16,7 @@ public:
     void push_back(int data);
     void pop_front();
     void clear();
+    int search(int data);
     int get_size() const { return size; }
     int& operator[] (const int index);
 private:
