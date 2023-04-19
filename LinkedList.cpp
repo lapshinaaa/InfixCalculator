@@ -259,7 +259,3 @@ int List::search(int data)
 
     return -1; // if the element not found
 }
-
-
-
-
