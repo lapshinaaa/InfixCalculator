@@ -11,12 +11,12 @@ public:
     void remove (int data);
     void removeAt(int index);
     void pop_back();
-    void print();
+    void print() const;
     void push_front(int data);
     void push_back(int data);
     void pop_front();
     void clear();
-    int search(int data);
+    int search(int data) const;
     int get_size() const { return size; }
     int& operator[] (const int index);
 private:

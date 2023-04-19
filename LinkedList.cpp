@@ -11,12 +11,12 @@ public:
     void removeAt(int index);
     void remove (int data);
     void pop_back();
-    void print();
+    void print() const;
     void push_front(int data);
     void push_back(int data);
     void pop_front();
     void clear();
-    int search(int data);
+    int search(int data) const;
     int get_size() const {return size;}
     int& operator[] (int index);
 
@@ -169,7 +169,7 @@ void List::insert(int data, int index)
 
 
 // FUNCTION TO PRINT OUT ALL THE ELEMENTS OF THE LINKED LIST
-void List::print()
+void List::print() const
 {
     Node *currNode = head;
     while (currNode != nullptr)
@@ -253,7 +253,7 @@ void List::remove(int data)
 
 
 // RETURNING THE INDEX OF THE FIRST OCCURRENCE OF THE GIVEN VALUE
-int List::search(int data)
+int List::search(int data) const
 {
     Node *currElem = head;
     int index = 0;
