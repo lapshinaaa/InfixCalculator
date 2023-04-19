@@ -89,15 +89,16 @@ int &List::operator[](const int index) // overloaded square bracket operator "Li
     int counter = 0;
     Node *currNode = this->head;
 
-    while(currNode != nullptr)
+    while (currNode != nullptr)
     {
-        if (counter == index) // if we're on the right element
-        {
-            return currNode->data;
-        }
+        // if we're on the right element
+        if (counter == index) return currNode->data;
+
         currNode = currNode->ptrNextNode;
         counter++;
     }
+
+    throw std::out_of_range("Index out of range"); // throw an exception if the index is out of range
 }
 
 
@@ -136,23 +137,33 @@ void List::push_front(int data)
 // ADDING ELEMENT AT A PARTICULAR INDEX TO OUR LIST
 void List::insert(int data, int index)
 {
-    if (index == 0) // if we want to add the element to the beginning
+    try
     {
-        push_front(data);
-    }
-
-    else
-    {
-        Node *previousElem = this->head;
-
-        for (int i = 0; i < index - 1; ++i)
+        if (index == 0) // if we want to add the element to the beginning
         {
-            previousElem = previousElem->ptrNextNode; // accessing an object's field by using '->'
-        }
+            push_front(data);
+        } else {
+            Node *previousElem = this->head;
 
-        Node *newNode = new Node(data, previousElem->ptrNextNode); // getting the last element's address
-        previousElem->ptrNextNode = newNode;
-        size++;
+            for (int i = 0; i < index - 1; ++i) {
+                if (previousElem == nullptr)
+                    throw std::out_of_range("Index out of range");
+
+                previousElem = previousElem->ptrNextNode; // accessing an object's field by using '->'
+            }
+
+            if (previousElem == nullptr)
+                throw std::out_of_range("Index out of range");
+
+            Node *newNode = new Node(data,
+                                     previousElem->ptrNextNode); // newly-added node will now point to the next element
+            previousElem->ptrNextNode = newNode;
+            size++;
+        }
+    }
+    catch (std::out_of_range& e)
+    {
+        std::cout << "Error occurred while inserting an element: " << e.what() << std::endl;
     }
 }
 
@@ -173,24 +184,27 @@ void List::print()
 // REMOVING AN ELEMENT AT A PARTICULAR INDEX FROM THE LIST
 void List::removeAt(int index)
 {
-    if (index == 0)
+    try
     {
-        pop_front();
+        if (index == 0) {
+            pop_front();
+        } else {
+            Node *previousElem = head;
+            for (int i = 0; i < index - 1; ++i) {
+                previousElem = previousElem->ptrNextNode;
+            }
+
+            Node *toDelete = previousElem->ptrNextNode; // getting the address of the node for deletion
+            previousElem->ptrNextNode = toDelete->ptrNextNode; // pointing to the node next after the one for deletion
+
+            delete toDelete;
+            size--;
+        }
     }
 
-    else
+    catch (std::exception& e)
     {
-        Node *previousElem = head;
-        for (int i = 0; i < index - 1; ++i)
-        {
-            previousElem = previousElem->ptrNextNode;
-        }
-
-        Node *toDelete = previousElem->ptrNextNode; // getting the address of the node for deletion
-        previousElem->ptrNextNode = toDelete->ptrNextNode; // pointing to the node next after the one for deletion
-
-        delete toDelete;
-        size--;
+        std::cout<<"Error occurred while removing an element at index. Index out of range."<<e.what()<<std::endl;
     }
 }
 
