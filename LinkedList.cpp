@@ -19,7 +19,7 @@ public:
     void clear();
     int search(T data) const;
     int get_size() const {return size;}
-    T& operator[] (int index);
+    T& operator[] (int index) const;
 
 
 private:
@@ -90,7 +90,7 @@ void List<T>::push_back(T data)
 
 // SEARCH FOR THE ELEMENT AT A PARTICULAR INDEX
 template <typename T>
-T& List<T>::operator[](const int index) // overloaded square bracket operator "List[5]"
+T& List<T>::operator[](const int index) const // overloaded square bracket operator "List[5]"
 {
     int counter = 0;
     Node<T> *currNode = this->head;
@@ -103,8 +103,6 @@ T& List<T>::operator[](const int index) // overloaded square bracket operator "L
         currNode = currNode->ptrNextNode;
         counter++;
     }
-
-    throw std::out_of_range("Index out of range"); // throw an exception if the index is out of range
 }
 
 

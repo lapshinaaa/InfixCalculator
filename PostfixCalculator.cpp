@@ -1,9 +1,8 @@
 #include "Stack.cpp"
 #include <iostream>
+#include <string>
 
-int main()
+class PostfixCalculator
 {
 
-
-    return 0;
-}
+};
