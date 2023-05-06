@@ -1,49 +1,37 @@
 #ifndef LISTCLASS_LINKEDLIST_H
 #define LISTCLASS_LINKEDLIST_H
 
-#pragma once
 
-#include <iostream>
-
-template <typename T>
-class List
-{
+class List {
 public:
-    List<T>();
-    ~List<T>();
-
-    // prototypes of all the necessary functions
-    void insert(T data, int index);
+    List();
+    ~List();
+    void insert(int value, int index);
+    void remove (int data);
     void removeAt(int index);
-    void remove(T data);
     void pop_back();
     void print() const;
-    void push_front(T data);
-    void push_back(T data);
+    void push_front(int data);
+    void push_back(int data);
     void pop_front();
     void clear();
-    int search(T data) const;
-    int get_size() const {return size;}
-    T& operator[] (int index);
+    int search(int data) const;
+    int get_size() const { return size; }
+    int& operator[](const int index) const;
 
 private:
-    template <typename U>
     class Node
     {
     public:
-        Node<U> *ptrNextNode; // pointer to the next node (address)
-        U data;
-
-        Node (U data = 0, Node<U> *ptrNextNode = nullptr)
-        {
-            this->data = data;
-            this->ptrNextNode = ptrNextNode;
-        }
+        // constructor (just written differently: The initializer list approach)
+        Node(int data = 0, Node* ptrNextNode = nullptr) : data(data), ptrNextNode(ptrNextNode) {}
+        Node* ptrNextNode;
+        int data;
     };
 
-    Node<T> *head;
+    Node* head;
     int size;
-};
 
+};
 
 #endif //LISTCLASS_LINKEDLIST_H
