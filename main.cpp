@@ -4,17 +4,24 @@
 int main()
 {
     PostfixCalculator calculator;
-
-    std::string expression = "4 5 7 * 2 + -";
+    std::string expression;
     int result;
 
-    try {
-        result = calculator.calculate(expression);
-        std::cout << "Result: " << result <<  std::endl;
-    }
-    catch ( std::runtime_error& e)
+    std::cout<<"Enter the problem to solve with spaces in a postfix form: "<<std::endl;
+    std::getline(std::cin, expression); // reading the user input
+
+    while (expression != "exit")
     {
-        std::cout << "Error: " << e.what() <<  std::endl;
+        try {
+            result = calculator.calculate(expression);
+            std::cout << "Result: " << result << std::endl;
+        }
+        catch (std::runtime_error &e) {
+            std::cout << "Error: " << e.what() << std::endl;
+        }
+
+        std::cout << "To exit the program, enter 'exit' or enter another expression: " << std::endl;
+        std::getline(std::cin, expression); // reading the user input
     }
 
     return 0;

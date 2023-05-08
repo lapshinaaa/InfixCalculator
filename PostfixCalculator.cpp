@@ -1,21 +1,41 @@
 #include <iostream>
 #include <string>
-#include "PostfixCalculator.h"
+#include "Stack.h"
 
 
-// removing the declaration (it's only located in header)
-PostfixCalculator::PostfixCalculator() = default;
+class PostfixCalculator
+{
+public:
+    PostfixCalculator();
+    int calculate(std::string expression);
+
+private:
+    Stack stack;
+};
+
+PostfixCalculator::PostfixCalculator()
+= default;;
 
 int PostfixCalculator::calculate(std::string expression)
 {
     Stack stack; // initializing a stack object to store operands (digits)
 
     // traversing the string, getting all the characters:
+    std::string temp; // creating a temporary value
     for (char& c : expression)
     {
-        if (std::isdigit(c)) // if the current char is an operand (digit), push it onto the stack
+        if (std::isdigit(c))
         {
-            stack.push(c - '0'); // converting into integer (from ASCII into int)
+            temp += c;
+        }
+        else if (c == ' ')
+        {
+            if (!temp.empty())
+            {
+                int operand = std::stoi(temp); // converting string to int
+                stack.push(operand); // pushing the operand onto the stack
+                temp.clear();  // clearing the temporary value
+            }
         }
         else if (c == '+' || c == '-' || c == '*' || c == '/') // if the current char is an operation char
         {
@@ -56,6 +76,11 @@ int PostfixCalculator::calculate(std::string expression)
             throw std::runtime_error("Invalid expression. Try again.");
         }
     }
+//    if (!temp.empty())
+//    {
+//        int operand = std::stoi(temp);
+//        stack.push(operand);
+//    }
 
     if (stack.size() != 1) // if there's more than one char in the stack
     {
@@ -63,4 +88,7 @@ int PostfixCalculator::calculate(std::string expression)
     }
 
     return stack.top(); // returning the resulting value
+
 }
+
+

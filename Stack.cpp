@@ -54,6 +54,7 @@ bool Stack::empty() const
     return list.get_size() == 0;
 }
 
+// GETTING THE SIZE OF THE STACK
 int Stack::size() const
 {
     return list.get_size();
