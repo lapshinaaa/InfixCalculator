@@ -76,11 +76,11 @@ int PostfixCalculator::calculate(std::string expression)
             throw std::runtime_error("Invalid expression. Try again.");
         }
     }
-//    if (!temp.empty())
-//    {
-//        int operand = std::stoi(temp);
-//        stack.push(operand);
-//    }
+    if (!temp.empty())
+    {
+        int operand = std::stoi(temp);
+        stack.push(operand);
+    }
 
     if (stack.size() != 1) // if there's more than one char in the stack
     {
