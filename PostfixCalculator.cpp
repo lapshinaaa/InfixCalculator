@@ -1,94 +1,102 @@
-#include <iostream>
-#include <string>
 #include "Stack.h"
+#include <cctype>
+#include <stdexcept>
 
-
-class PostfixCalculator
+class Calculator
 {
 public:
-    PostfixCalculator();
-    int calculate(std::string expression);
+    Calculator();
+
+    int evaluatePostfixExpression(const std::string& expression);
 
 private:
     Stack stack;
+
+    bool isOperator(char c);
+    int performOperation(char operation, int operand1, int operand2);
 };
 
-PostfixCalculator::PostfixCalculator()
-= default;;
-
-int PostfixCalculator::calculate(std::string expression)
+Calculator::Calculator()
 {
-    Stack stack; // initializing a stack object to store operands (digits)
+}
 
-    // traversing the string, getting all the characters:
-    std::string temp; // creating a temporary value
-    for (char& c : expression)
+// ФУНКЦИЯ ДЛЯ ОЦЕНКИ ЗНАЧЕНИЯ ВВЕДЕННОГО ВЫРАЖЕНИЯ
+int Calculator::evaluatePostfixExpression(const std::string& expression)
+{
+    int number = 0; // временная переменная для сбора чисел (если число состоит из более, чем одной цифры)
+
+    for (char c : expression)
     {
-        if (std::isdigit(c))
+        if (isdigit(c))
         {
-            temp += c;
+            number = number * 10 + (c - '0'); // Собираем число из отдельных цифр
         }
         else if (c == ' ')
         {
-            if (!temp.empty())
+            if (number != 0)
             {
-                int operand = std::stoi(temp); // converting string to int
-                stack.push(operand); // pushing the operand onto the stack
-                temp.clear();  // clearing the temporary value
+                stack.push(number);
+                number = 0; // Сбрасываем временную переменную, где хранился операнд
             }
         }
-        else if (c == '+' || c == '-' || c == '*' || c == '/') // if the current char is an operation char
+        else if (isOperator(c))
         {
-            int operand_2 = stack.pop();
-            int operand_1 = stack.pop();
-            int result = 0;
-
-            switch (c)
+            if (stack.size() < 2)
             {
-                case '+':
-                    result = operand_1 + operand_2;
-                    break;
-
-                case '-':
-                    result = operand_1 - operand_2;
-                    break;
-
-                case '*':
-                    result = operand_1 * operand_2;
-                    break;
-
-                case '/':
-                    if (operand_2 == 0)
-                    {
-                        throw std::runtime_error("Division by zero!");
-                    }
-                    result = operand_1 / operand_2;
-                    break;
+                // Недостаточно операндов для выполнения операции
+                throw std::runtime_error("Invalid expression");
             }
+
+            int operand2 = stack.pop();
+            int operand1 = stack.pop();
+            int result = performOperation(c, operand1, operand2);
             stack.push(result);
-        }
-        else if (c == ' ') // if we're encountering a space, ignore it
-        {
-
         }
         else
         {
-            throw std::runtime_error("Invalid expression. Try again.");
+            // Некорректный символ в выражении
+            throw std::runtime_error("Invalid expression");
         }
     }
-    if (!temp.empty())
+
+    if (number != 0)
     {
-        int operand = std::stoi(temp);
-        stack.push(operand);
+        stack.push(number);
     }
 
-    if (stack.size() != 1) // if there's more than one char in the stack
+    if (stack.size() != 1)
     {
-        throw std::runtime_error("Invalid expression. Try again.");
+        // В конце выражения осталось больше одного значения в стеке
+        throw std::runtime_error("Invalid expression");
     }
 
-    return stack.top(); // returning the resulting value
-
+    return stack.top();
 }
 
+bool Calculator::isOperator(char c)
+{
+    return c == '+' || c == '-' || c == '*' || c == '/';
+}
 
+int Calculator::performOperation(char operation, int operand1, int operand2)
+{
+    switch (operation)
+    {
+        case '+':
+            return operand1 + operand2;
+        case '-':
+            return operand1 - operand2;
+        case '*':
+            return operand1 * operand2;
+        case '/':
+            if (operand2 == 0)
+            {
+                // Деление на ноль
+                throw std::runtime_error("Invalid expression");
+            }
+            return operand1 / operand2;
+        default:
+            // Некорректная операция
+            throw std::runtime_error("Invalid expression");
+    }
+}

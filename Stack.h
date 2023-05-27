@@ -1,23 +1,20 @@
 #ifndef STACK_H
 #define STACK_H
 
-#include "LinkedList.h"
+#include "LinkedList.cpp"
 
 class Stack {
 public:
     // constructor and destructor
     Stack();
-    ~Stack();
-
-    // prototypes of all the necessary functions:
-    void push(int data);
+    void push(int value);
     int pop();
     int size() const;
     int top() const;
     bool empty() const;
 
 private:
-    List list;
+    LinkedList<int> list;
 };
 
 #endif //STACK_H
