@@ -1,12 +1,11 @@
 #include <iostream>
-#include <string>
 #include "PostfixCalculator.h"
-#include "Queue.cpp"
+#include "Queue.h"
 
 int main()
 {
-
-
+    Queue<int> queue;
+    queue.enqueue(5);
+    std::cout<<"The first elem is: "<<queue.front();
     return 0;
-
 }

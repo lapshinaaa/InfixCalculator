@@ -1,21 +1,17 @@
-#ifndef CALCULATOR_H
-#define CALCULATOR_H
+#ifndef POSTFIXCALCULATOR_H
+#define POSTFIXCALCULATOR_H
 
-#include "Stack.h"
 #include <string>
-#include <stdexcept> // для обработки исключений
+#include "Stack.h"
 
-class Calculator
+class PostfixCalculator
 {
 public:
-    Calculator();
-    int evaluatePostfixExpression(const std::string& expression);
+    PostfixCalculator();
+    int calculate(std::string expression);
 
 private:
     Stack stack;
-
-    bool isOperator(char c);
-    int performOperation(char operation, int operand1, int operand2);
 };
 
-#endif
+#endif // POSTFIXCALCULATOR_H
