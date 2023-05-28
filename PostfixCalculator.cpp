@@ -2,13 +2,12 @@
 #include <string>
 #include "PostfixCalculator.h"
 
-
 // removing the declaration (it's only located in header)
 PostfixCalculator::PostfixCalculator() = default;
 
 int PostfixCalculator::calculate(std::string expression)
 {
-    Stack stack; // initializing a stack object to store operands (digits)
+    // *** Stack<int> stack; // initializing a stack object to store operands (digits)
 
     // traversing the string, getting all the characters:
     for (char& c : expression)

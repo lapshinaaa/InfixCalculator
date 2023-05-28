@@ -11,7 +11,7 @@ public:
     int calculate(std::string expression);
 
 private:
-    Stack stack;
+    Stack<int> stack;
 };
 
 #endif // POSTFIXCALCULATOR_H

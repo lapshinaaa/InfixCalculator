@@ -4,6 +4,7 @@
 #include <iostream>
 
 // NOT USING LINKEDLIST.CPP DUE TO THE USAGE OF TEMPLATES
+
 template <typename T>
 class List {
 public:
@@ -21,7 +22,7 @@ public:
     void clear();
     int search(T data) const;
     int get_size() const { return size; }
-    T& operator[](const int index) const;
+    T& operator[](int index) const;
 
 private:
     class Node {

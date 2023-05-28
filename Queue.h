@@ -12,6 +12,7 @@ public:
     T front() const;
     int size() const;
     bool empty() const;
+    void clear();
 
 private:
     List<T> list;
@@ -52,6 +53,13 @@ int Queue<T>::size() const {
 template <typename T>
 bool Queue<T>::empty() const {
     return list.get_size() == 0;
+}
+
+// CLEARING THE QUEUE
+template<typename T>
+void Queue<T>::clear()
+{
+    list.clear();
 }
 
 #endif // QUEUE_H
