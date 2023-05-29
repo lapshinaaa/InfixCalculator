@@ -7,14 +7,21 @@ PostfixCalculator::PostfixCalculator() = default;
 
 int PostfixCalculator::calculate(std::string expression)
 {
-    // *** Stack<int> stack; // initializing a stack object to store operands (digits)
+    int number = 0; // variable for an int (including multiple-digit ones)
 
-    // traversing the string, getting all the characters:
     for (char& c : expression)
     {
-        if (std::isdigit(c)) // if the current char is an operand (digit), push it onto the stack
+        if (std::isdigit(c))
         {
-            stack.push(c - '0'); // converting into integer (from ASCII into int)
+            number = number * 10 + (c - '0'); // adding digits to the current number
+        }
+        else if (c == ' ')
+        {
+            if (number != 0) // if the number has been formed
+            {
+                stack.push(number);
+                number = 0; // resetting the number variable
+            }
         }
         else if (c == '+' || c == '-' || c == '*' || c == '/') // if the current char is an operation char
         {

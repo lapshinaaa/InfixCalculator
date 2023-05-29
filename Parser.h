@@ -1,23 +1,18 @@
 #ifndef PARSER_H
 #define PARSER_H
 
-#include <string>
-#include <sstream>
-#include <cctype>
 #include "Stack.h"
 #include "Queue.h"
+#include <string>
+#include <sstream>
 
-class Parser
-{
+class Parser {
 public:
     std::string infixToPostfix(const std::string& expression);
-    bool isOperator(char c) const;
-    int getPrecedence(char c) const;
-    void clear();
 
 private:
-    Stack<char> operatorStack;
-    Queue<char> outputQueue;
+    bool isOperator(char c) const;
+    int getPrecedence(char c) const;
 };
 
 #endif // PARSER_H

@@ -30,8 +30,10 @@ int main()
 //    Parser parser;
 //    PostfixCalculator calculator;
 //    std::string expression;
+//    std::string postfix;
 //    std::getline(std::cin, expression);
-//    expression = parser.infixToPostfix(expression);
-//    std::cout<<calculator.calculate(expression);
+//    postfix = parser.infixToPostfix(expression);
+//    std::cout<<postfix<<std::endl;
+//    std::cout<<calculator.calculate(postfix);
     return 0;
 }

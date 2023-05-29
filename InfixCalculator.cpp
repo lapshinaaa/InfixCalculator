@@ -4,7 +4,7 @@ int InfixCalculator::calculate(const std::string& expression) // passing the par
 {
     std::string postfix = parser.infixToPostfix(expression); // converting to postfix form (RVP)
     result = postfixCalculator.calculate(postfix);
-    parser.clear();
+  //  parser.clear();
     return result; // returning the result of calculations
 }
 
