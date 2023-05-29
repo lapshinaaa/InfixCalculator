@@ -28,7 +28,7 @@ int main()
     }
 
 //    Parser parser;
-//    PostfixCalculator calculator;
+//    InfixCalculator calculator;
 //    std::string expression;
 //    std::string postfix;
 //    std::getline(std::cin, expression);
