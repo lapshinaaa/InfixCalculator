@@ -8,7 +8,13 @@
 
 class Parser {
 public:
+    std::stringstream postfix;
+    std::string currentNumber; // for multiple-digit numbers
+    Queue<std::string> outputQueue;
+    Stack<char> operatorStack;
+
     std::string infixToPostfix(const std::string& expression);
+   // void clear();
 
 private:
     bool isOperator(char c) const;
