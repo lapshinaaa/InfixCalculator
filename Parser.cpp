@@ -20,7 +20,7 @@ std::string Parser::infixToPostfix(const std::string& expression)
         {
             if (!token.empty())
             {
-                if (expectOperand)
+                if (expectOperand) // checking if we're expecting an operand
                 {
                     if (std::isdigit(token[0]))
                     {
@@ -160,15 +160,14 @@ std::string Parser::infixToPostfix(const std::string& expression)
         operatorStack.pop();
     }
 
-    std::stringstream postfix;
+    if (expectOperand && !outputQueue.empty() && outputQueue.size() < 2) // if the overall expression consists of only one number
+    {
+        throw std::runtime_error("Incomplete expression: " + expression);
+    }
+
     while (!outputQueue.empty())
     {
         postfix << outputQueue.dequeue() << " "; // extract elements from the output queue and add them to the postfix string
-    }
-
-    if (expectOperand && outputQueue.size() < 2) // if the overall expression consists of only one number
-    {
-        throw std::runtime_error("Incomplete expression: " + expression);
     }
 
     return postfix.str();
