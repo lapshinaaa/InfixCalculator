@@ -1,71 +1,146 @@
 #include "Parser.h"
 
-//This parser is designed to convert an infix mathematical expression into postfix notation using
-// the Shunting Yard algorithm (a.k.a. Алгоритм Сортировочной Станции)
+// This parser is designed to convert an infix mathematical expression into postfix notation using
+// the Shunting Yard algorithm
+
 std::string Parser::infixToPostfix(const std::string& expression)
 {
-    // traversing the expression
+    std::string token; // variable to store the current token
+    bool expectOperand = true; // flag to track if an operand is expected
+
     for (char c : expression)
     {
-        if (std::isspace(c)) // if it's a whitespace character, skip it
+        if (std::isspace(c)) // if it is a space, process the current token
         {
+            if (!token.empty())
+            {
+                if (expectOperand)
+                {
+                    if (std::isdigit(token[0]))
+                    {
+                        outputQueue.enqueue(token); // add the number to the output queue
+                        expectOperand = false;
+                    }
+                    else
+                    {
+                        throw std::runtime_error("Invalid token in the expression: " + token);
+                    }
+                }
+                else
+                {
+                    throw std::runtime_error("Invalid token in the expression: " + token);
+                }
+                token.clear(); // clear the current token
+            }
             continue;
         }
-        else if (std::isdigit(c))
+
+        if (std::isdigit(c))
         {
-            currentNumber += c; //appending a digit to the current number
+            token += c; // append the digit to the current token
         }
         else if (isOperator(c))
         {
-            if (!currentNumber.empty()) // we have encountered the end of a number, so the number is added to the output queue
+            if (!token.empty())
             {
-                outputQueue.enqueue(currentNumber);
-                currentNumber.clear(); // clearing the variable
+                if (expectOperand)
+                {
+                    if (std::isdigit(token[0]))
+                    {
+                        outputQueue.enqueue(token); // add the number to the output queue
+                        expectOperand = false;
+                    }
+                    else
+                    {
+                        throw std::runtime_error("Invalid token in the expression: " + token);
+                    }
+                }
+                else
+                {
+                    throw std::runtime_error("Invalid token in the expression: " + token);
+                }
+                token.clear(); // clear the current token
             }
 
             while (!operatorStack.empty() && operatorStack.top() != '(' && getPrecedence(operatorStack.top()) >= getPrecedence(c))
             {
-                outputQueue.enqueue(std::string(1, operatorStack.top())); // adding operators from the stack
+                outputQueue.enqueue(std::string(1, operatorStack.top())); // add operators from the stack
                 operatorStack.pop();
             }
 
-            operatorStack.push(c); // pushing the current operator
+            operatorStack.push(c); // add the current operator to the stack
+            expectOperand = true;
         }
-        else if (c == '(') // pushing onto the stack if it's an opening parenthesis
+        else if (c == '(') // if it is an opening parenthesis, add it to the stack
         {
+            if (!token.empty())
+            {
+                throw std::runtime_error("Invalid token in the expression: " + token);
+            }
             operatorStack.push(c);
+            expectOperand = true;
         }
         else if (c == ')')
         {
-            if (!currentNumber.empty())
+            if (!token.empty())
             {
-                outputQueue.enqueue(currentNumber); // adding the number to the queue
-                currentNumber.clear();
+                if (expectOperand)
+                {
+                    if (std::isdigit(token[0]))
+                    {
+                        outputQueue.enqueue(token); // add the number to the output queue
+                        expectOperand = false;
+                    }
+                    else
+                    {
+                        throw std::runtime_error("Invalid token in the expression: " + token);
+                    }
+                }
+                else
+                {
+                    throw std::runtime_error("Invalid token in the expression: " + token);
+                }
+                token.clear(); // clear the current token
             }
 
             while (!operatorStack.empty() && operatorStack.top() != '(')
             {
-                outputQueue.enqueue(std::string(1, operatorStack.top())); // adding operators from the stack
+                outputQueue.enqueue(std::string(1, operatorStack.top())); // add operators from the stack
                 operatorStack.pop();
             }
 
-            if (operatorStack.empty()) // if there's no matching parenthesis (an opening bracket)
+            if (operatorStack.empty()) // if there is no corresponding opening parenthesis
             {
                 throw std::runtime_error("Mismatched parentheses");
             }
 
-            operatorStack.pop(); // popping the opening parenthesis from the stack
+            operatorStack.pop(); // remove the opening parenthesis from the stack
+            expectOperand = false;
         }
         else
         {
-            throw std::runtime_error("Invalid character in the expression");
+            throw std::runtime_error("Invalid character in the expression: " + std::string(1, c));
         }
     }
 
-    if (!currentNumber.empty())
+    if (!token.empty())
     {
-        outputQueue.enqueue(currentNumber);
-        currentNumber.clear();
+        if (expectOperand)
+        {
+            if (std::isdigit(token[0]))
+            {
+                outputQueue.enqueue(token); // add the number to the output queue
+            }
+            else
+            {
+                throw std::runtime_error("Invalid token in the expression: " + token);
+            }
+        }
+        else
+        {
+            throw std::runtime_error("Invalid token in the expression: " + token);
+        }
+        token.clear(); // clear the current token
     }
 
     while (!operatorStack.empty())
@@ -75,27 +150,25 @@ std::string Parser::infixToPostfix(const std::string& expression)
             throw std::runtime_error("Mismatched parentheses");
         }
 
-        // the remaining operators in the operator stack are added to the output queue
-        outputQueue.enqueue(std::string(1, operatorStack.top()));
+        outputQueue.enqueue(std::string(1, operatorStack.top())); // add the remaining operators from the stack to the output queue
         operatorStack.pop();
     }
 
+    std::stringstream postfix;
     while (!outputQueue.empty())
     {
-        //  deque elements from the output queue and append them to the postfix string stream
-        postfix << outputQueue.dequeue() << " ";
+        postfix << outputQueue.dequeue() << " "; // extract elements from the output queue and add them to the postfix string
     }
 
     return postfix.str();
 }
-
 
 bool Parser::isOperator(char c) const
 {
     return c == '+' || c == '-' || c == '*' || c == '/';
 }
 
-// assigns a precedence value to each operator.
+// Assigns a precedence value to each operator.
 int Parser::getPrecedence(char c) const
 {
     if (c == '+' || c == '-')
@@ -108,10 +181,3 @@ int Parser::getPrecedence(char c) const
     }
     return 0;
 }
-
-//void Parser::clear()
-//{
-//    outputQueue.clear();
-//    operatorStack.clear();
-//}
-//
