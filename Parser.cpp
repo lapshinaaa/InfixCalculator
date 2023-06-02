@@ -3,6 +3,12 @@
 // This parser is designed to convert an infix mathematical expression into postfix notation using
 // the Shunting Yard algorithm
 
+// 15
+// 2 3
+//2 - -3
+//15 + 5 8
+//15 5 /
+
 std::string Parser::infixToPostfix(const std::string& expression)
 {
     std::string token; // variable to store the current token
@@ -158,6 +164,11 @@ std::string Parser::infixToPostfix(const std::string& expression)
     while (!outputQueue.empty())
     {
         postfix << outputQueue.dequeue() << " "; // extract elements from the output queue and add them to the postfix string
+    }
+
+    if (expectOperand && outputQueue.size() < 2) // if the overall expression consists of only one number
+    {
+        throw std::runtime_error("Incomplete expression: " + expression);
     }
 
     return postfix.str();
