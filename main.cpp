@@ -1,6 +1,14 @@
 #include <iostream>
 #include "InfixCalculator.h"
 
+// Шаблонный Лист
+// Шаблонный стэк
+// Реализована шаблонная очередь для парсера
+// парсер на основе алгоритма шантинг ярда
+// инфиксный калькулятор
+// учет всех ошибок
+
+
 int main()
 {
     InfixCalculator infixCalculator;
@@ -13,7 +21,7 @@ int main()
     try
     {
         result = infixCalculator.calculate(expression);
-        std::cout<<"Result: "<<result<<std::endl;
+        std::cout << "Result: " << result << std::endl;
     }
     catch (std::runtime_error &e)
     {
@@ -21,14 +29,6 @@ int main()
     }
 
 
-//    Parser parser;
-//    InfixCalculator calculator;
-//    std::string expression;
-//    std::string postfix;
-//    std::getline(std::cin, expression);
-//    postfix = parser.infixToPostfix(expression);
-//    std::cout<<postfix<<std::endl;
-//    std::cout<<calculator.calculate(postfix);
 
     return 0;
 }

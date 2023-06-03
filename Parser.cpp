@@ -5,15 +5,11 @@
 
 // 15
 // 2 3
-//2 - -3
 //15 + 5 8
 //15 5 /
 
 std::string Parser::infixToPostfix(const std::string& expression)
 {
-    std::string token; // variable to store the current token
-    bool expectOperand = true; // flag to track if an operand is expected
-
     for (char c : expression)
     {
         if (std::isspace(c)) // if it is a space, process the current token
@@ -170,6 +166,8 @@ std::string Parser::infixToPostfix(const std::string& expression)
         postfix << outputQueue.dequeue() << " "; // extract elements from the output queue and add them to the postfix string
     }
 
+  //  operatorStack.clear();
+  //  outputQueue.clear();
     return postfix.str();
 }
 

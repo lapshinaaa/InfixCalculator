@@ -9,6 +9,8 @@
 class Parser {
 public:
     std::stringstream postfix;
+    std::string token; // variable to store the current token
+    bool expectOperand = true; // flag to track if an operand is expected
     std::string currentNumber; // for multiple-digit numbers
     Queue<std::string> outputQueue;
     Stack<char> operatorStack;
